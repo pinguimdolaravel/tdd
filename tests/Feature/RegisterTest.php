@@ -15,32 +15,33 @@ class RegisterTest extends TestCase
     public function it_should_be_able_to_register_as_a_new_user()
     {
         // Arrange
+        $this->withoutExceptionHandling();
 
         // Act
         $return = $this->post(route('register'), [
             'name'               => 'Rafael Lunardelli',
-            'email'              => str_repeat('a', 255) . 'pinguim@dolaravel.com',
-            'email_confirmation' => str_repeat('a', 255) . 'pinguim@dolaravel.com',
+            'email'              => 'pinguim@dolaravel.com',
+            'email_confirmation' => 'pinguim@dolaravel.com',
             'password'           => 'uma senha Qualquer',
         ]);
 
         // Assert
-        // $return->assertRedirect('dashboard');
+        $return->assertRedirect('dashboard');
 
         $this->assertDatabaseHas('users', [
             'name'  => 'Rafael Lunardelli',
-            'email' => str_repeat('a', 255) . 'pinguim@dolaravel.com',
+            'email' => 'pinguim@dolaravel.com',
         ]);
 
-        // /** @var User $user */
-        // $user = User::whereEmail('pinguim@dolaravel.com')->firstOrFail();
+        /** @var User $user */
+        $user = User::whereEmail('pinguim@dolaravel.com')->firstOrFail();
 
-        // $this->assertTrue(
-        //     Hash::check('uma senha qualquer', $user->password),
-        //     'Checking if password was saved and it is encrypted.'
-        // );
+        $this->assertTrue(
+            Hash::check('uma senha Qualquer', $user->password),
+            'Checking if password was saved and it is encrypted.'
+        );
 
-        // $this->assertAuthenticatedAs($user);
+        $this->assertAuthenticatedAs($user);
     }
 
     /** @test */
