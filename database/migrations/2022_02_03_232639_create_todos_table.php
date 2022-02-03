@@ -19,6 +19,7 @@ class CreateTodosTable extends Migration
             $table->string('description');
             $table->unsignedBigInteger('assigned_to_id');
             $table->foreign('assigned_to_id')->references('id')->on('users');
+            $table->string('file')->nullable();
             $table->timestamps();
         });
     }
